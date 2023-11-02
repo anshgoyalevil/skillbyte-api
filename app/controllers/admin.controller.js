@@ -1,26 +1,61 @@
 const db = require("../models");
 const User = db.user;
-const Service = db.service;
-const MessageBox = db.messageBox;
-const NotificationBox = db.notificationBox;
+const Internship = db.internship;
 var jwt = require("jsonwebtoken");
 var bcrypt = require("bcryptjs");
 const { emailTemplate } = require("../templates/emailTemplate");
 const { sendEmail } = require("../config/emailer");
 
-exports.getAllUsers = (req, res) => {
-    User.find({}).exec((err, users) => {
+exports.addInternship = async (req, res) => {
+    const { title, company, location, stipend, duration, link, batch } = req.body;
+
+    Internship.findOne({ batch: batch }).exec((err, internshipDoc) => {
         if (err) {
             res.status(500).send({ message: err });
             return;
         }
         else {
-            res.status(200).send(users);
+            const internship = new Internship({
+                title: title,
+                company: company,
+                location: location,
+                stipend: stipend,
+                duration: duration,
+                link: link,
+                isApproved: true,
+            });
+
+            internshipDoc.internships.push(internship);
+            internshipDoc.
+
+            internshipDoc.save(async (err, updatedInternshipDoc) => {
+                if (err) {
+                    res.status(500).send({ message: err });
+                    return;
+                } else {
+                    res.status(200).send(updatedInternshipDoc);
+                    return;
+                }
+            });
+        }
+    });
+};
+
+exports.getAllBatches = (req, res) => {
+    Batch.find({}).exec((err, batches) => {
+        if (err) {
+            res.status(500).send({ message: err });
+            return;
+        }
+        else {
+            res.status(200).send(batches);
             return;
         }
     });
 };
 
+// CodifyPlus Dashboard's Code
+/*
 exports.changeUserRole = (req, res) => {
     const { newRole, userId } = req.body;
     User.findByIdAndUpdate(userId, { role: newRole },
@@ -607,3 +642,4 @@ exports.approveNote = (req, res) => {
         }
     });
 };
+*/

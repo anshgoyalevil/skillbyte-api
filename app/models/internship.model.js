@@ -4,15 +4,16 @@ const InternshipSchema = new mongoose.Schema({
     internships: [
         {
             title: String,
+            link: String,
             company: String,
             location: String,
             stipend: String,
-            applyBy: String,
             duration: String,
             createdAt: {
                 type: Date,
                 default: Date.now
-            }
+            },
+            isApproved: Boolean,
         }
     ],
     batch: String,

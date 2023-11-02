@@ -10,59 +10,10 @@ module.exports = function (app) {
         next();
     });
 
-    app.get("/api/getAllUsers", [authJwt.verifyToken, authJwt.isAdmin],
-        controller.getAllUsers);
+    app.get("/api/addInternship", [authJwt.verifyToken, authJwt.isAdmin],
+        controller.addInternship);
 
-    app.post("/api/changeUserRole", [authJwt.verifyToken, authJwt.isAdmin],
-        controller.changeUserRole);
-
-    app.post("/api/addNewUser", [authJwt.verifyToken, authJwt.isAdmin],
-        controller.addNewUser);
-
-    app.get("/api/getAllServices", [authJwt.verifyToken, authJwt.isAdmin],
-        controller.getAllServices);
-
-    app.get("/api/getAllUsernames", [authJwt.verifyToken, authJwt.isAdmin],
-        controller.getAllUsernames);
-
-    app.get("/api/getAllModerators", [authJwt.verifyToken, authJwt.isAdmin],
-        controller.getAllModerators);
-
-    app.post("/api/addNewService", [authJwt.verifyToken, authJwt.isAdmin],
-        controller.addNewService);
-
-    app.post("/api/addNote", [authJwt.verifyToken, authJwt.isAdmin],
-        controller.addNote);
-
-    app.post("/api/addTrack", [authJwt.verifyToken, authJwt.isAdmin],
-        controller.addTrack);
-
-    //TBD
-    app.post("/api/editNote", [authJwt.verifyToken, authJwt.isAdmin],
-        controller.addNewService);
-    //TBD
-    app.post("/api/editTrack", [authJwt.verifyToken, authJwt.isAdmin],
-        controller.addNewService);
-
-    app.post("/api/editTrackStatus", [authJwt.verifyToken, authJwt.isAdmin],
-        controller.editTrackStatus);
-
-    app.post("/api/markAsCompleted", [authJwt.verifyToken, authJwt.isAdmin],
-        controller.markAsCompleted);
-
-    app.post("/api/deleteService", [authJwt.verifyToken, authJwt.isAdmin],
-        controller.deleteService);
-
-    app.post("/api/deleteUser", [authJwt.verifyToken, authJwt.isAdmin],
-        controller.deleteUser);
-
-    app.post("/api/sendNotification", [authJwt.verifyToken, authJwt.isAdmin],
-        controller.sendNotification);
-
-    app.post("/api/approveTrack", [authJwt.verifyToken, authJwt.isAdmin],
-        controller.approveTrack);
-
-    app.post("/api/approveNote", [authJwt.verifyToken, authJwt.isAdmin],
-        controller.approveNote);
+    app.get("/api/getAllBatches", [authJwt.verifyToken, authJwt.isAdmin],
+        controller.getAllBatches);
 
 };
