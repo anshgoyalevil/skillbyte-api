@@ -20,6 +20,20 @@ verifyToken = (req, res, next) => {
   });
 };
 
+verifyMobileToken = (req, res, next) => {
+  let token = req.headers.authorization.split(' ')[1];
+
+  if (!token) {
+    return res.status(403).send({ message: "No token provided!" });
+  }
+  if (token === process.env.MOBILE_TOKEN) {
+    next();
+  }
+  else {
+    return res.status(401).send({ message: "Unauthorized!" });
+  }
+};
+
 isAdmin = (req, res, next) => {
   User.findById(req.userId).exec((err, user) => {
     if (err) {
@@ -69,6 +83,7 @@ const authJwt = {
   verifyToken,
   isAdmin,
   isModerator,
-  isAssignedToUpstreamService
+  isAssignedToUpstreamService,
+  verifyMobileToken,
 };
 module.exports = authJwt;

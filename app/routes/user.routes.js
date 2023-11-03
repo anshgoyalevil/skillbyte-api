@@ -12,12 +12,6 @@ module.exports = function (app) {
 
   app.get("/api/getUserStats", [authJwt.verifyToken], controller.getUserStats);
 
-  app.get("/api/getServiceInfo", [authJwt.verifyToken], controller.getServiceInfo);
-
-  app.get("/api/getAllNotifications", [authJwt.verifyToken], controller.getAllNotifications);
-
-  app.post("/api/deleteNotification", [authJwt.verifyToken], controller.deleteNotification);
-
   app.post("/api/updateProfile", [authJwt.verifyToken], controller.updateProfile);
 
   app.post("/api/changePassword", [authJwt.verifyToken], controller.changePassword);

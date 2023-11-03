@@ -1,10 +1,16 @@
 const db = require("../models");
 const User = db.user;
 const Internship = db.internship;
+const Batch = db.batch;
 var jwt = require("jsonwebtoken");
 var bcrypt = require("bcryptjs");
 const { emailTemplate } = require("../templates/emailTemplate");
 const { sendEmail } = require("../config/emailer");
+
+exports.deleteUser = async (req, res) => {
+    await User.findByIdAndDelete(req.body.userId);
+    res.status(200).send({ message: "Deleted!" });
+};
 
 exports.addInternship = async (req, res) => {
     const { title, company, location, stipend, duration, link, batch } = req.body;
@@ -15,18 +21,17 @@ exports.addInternship = async (req, res) => {
             return;
         }
         else {
-            const internship = new Internship({
-                title: title,
-                company: company,
-                location: location,
-                stipend: stipend,
-                duration: duration,
-                link: link,
+            const internship = {
+                title: title ? title : "Unknown",
+                company: company ? company : "Unknown",
+                location: location ? location : "Unknown",
+                stipend: stipend ? stipend : "Unknown",
+                duration: duration ? duration : "Unknown",
+                link: link ? link : "Unknown",
                 isApproved: true,
-            });
+            };
 
             internshipDoc.internships.push(internship);
-            internshipDoc.
 
             internshipDoc.save(async (err, updatedInternshipDoc) => {
                 if (err) {
@@ -51,6 +56,86 @@ exports.getAllBatches = (req, res) => {
             res.status(200).send(batches);
             return;
         }
+    });
+};
+
+exports.getAllUsers = (req, res) => {
+    User.find({}).exec((err, users) => {
+        if (err) {
+            res.status(500).send({ message: err });
+            return;
+        }
+        else {
+            res.status(200).send(users);
+            return;
+        }
+    });
+};
+
+exports.changeUserRole = (req, res) => {
+    const { newRole, userId } = req.body;
+    User.findByIdAndUpdate(userId, { role: newRole },
+        function (err, docs) {
+            if (err) {
+                res.status(500).send({ message: err });
+                return;
+            }
+            else {
+                res.status(204);
+            }
+        });
+};
+
+exports.addNewUser = (req, res) => {
+    const user = new User({
+        username: req.body.username,
+        email: req.body.email,
+        password: bcrypt.hashSync(req.body.password, 8)
+    });
+
+    user.save(async (err, user) => {
+        if (err) {
+            res.status(500).send({ message: err });
+            return;
+        }
+        user.role = "USER";
+        user.save(async (err) => {
+            if (err) {
+                res.status(500).send({ message: err });
+                return;
+            }
+            else {
+                res.send({ message: "User was registered successfully!" });
+            }
+        });
+    });
+};
+
+exports.addNewBatch = (req, res) => {
+
+    const internship = new Internship({
+        internships: [],
+        batch: req.body.year,
+    });
+
+    internship.save(async (err, internship) => {
+        if (err) {
+            res.status(500).send({ message: err });
+            return;
+        }
+        const batch = new Batch({
+            year: req.body.year,
+            internshipsId: internship._id,
+        });
+        batch.save(async (err) => {
+            if (err) {
+                res.status(500).send({ message: err });
+                return;
+            }
+            else {
+                res.send({ message: "Batch was added successfully!" });
+            }
+        });
     });
 };
 

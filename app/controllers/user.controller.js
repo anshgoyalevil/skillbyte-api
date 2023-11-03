@@ -1,12 +1,9 @@
 const db = require("../models");
 const User = db.user;
-const Service = db.service;
-const MessageBox = db.messageBox;
-const NotificationBox = db.notificationBox;
+const Batch = db.batch;
+const Internship = db.internship;
 var jwt = require("jsonwebtoken");
 var bcrypt = require("bcryptjs");
-const { emailTemplate } = require("../templates/emailTemplate");
-const { sendEmail } = require("../config/emailer");
 
 exports.getUserStats = (req, res) => {
   User.findById(req.userId).exec((err, user) => {
@@ -34,6 +31,7 @@ exports.getServiceInfo = (req, res) => {
   });
 };
 
+/*
 exports.getAllNotifications = (req, res) => {
   NotificationBox.findOne({ belongsTo: req.query.username }).exec(async (err, notificationBox) => {
     if (err) {
@@ -53,7 +51,9 @@ exports.getAllNotifications = (req, res) => {
     }
   });
 };
+*/
 
+/*
 exports.deleteNotification = async (req, res) => {
 
   NotificationBox.findOne({ belongsTo: req.body.username }).exec(async (err, notificationBox) => {
@@ -80,6 +80,7 @@ exports.deleteNotification = async (req, res) => {
     }
   });
 };
+*/
 
 exports.updateProfile = async (req, res) => {
   User.findById(req.userId).exec(async (err, user) => {

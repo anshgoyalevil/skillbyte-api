@@ -17,7 +17,6 @@ const InternshipSchema = new mongoose.Schema({
         }
     ],
     batch: String,
-    batchId: String,
     createdAt: {
         type: Date,
         default: Date.now
